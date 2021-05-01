@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'net.simforge'
+version repositoryVersion
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url 'https://mymavenrepo.com/repo/9k6aQjU4o2RPUv5zfolv/' // simforge repo read url
+    }
+}
+
+dependencies {
+    compile 'net.simforge:simforge-commons:latest.release'
+    compile 'net.simforge:simforge-atmosphere:latest.release'
+    compile 'net.simforge:refdata-airports:latest.release'
+
+    compile 'org.hibernate:hibernate-core:5.0.1.Final'
+    compile 'org.hibernate:hibernate-java8:5.0.1.Final'
+
+    compile 'org.slf4j:slf4j-api:1.7.30'
+
+    testCompile 'junit:junit:4.11'
+}
+
+publishing {
+    repositories {
+        maven {
+            url System.getenv('SIMFORGE_REPO_WRITE_URL')
+        }
+    }
+
+    publications {
+        maven(MavenPublication) {
+            artifactId = 'network-view-core'
+            version = repositoryVersion
+            from components.java
+        }
+    }
+}
