@@ -107,7 +107,7 @@ public class CsvSnapshotReportOpsService implements ReportOpsService {
 
     @Override
     public List<Report> loadAllReports() {
-        throw new UnsupportedOperationException();
+        return Collections.unmodifiableList(reports);
     }
 
     @Override
