@@ -20,16 +20,16 @@ repositories {
 }
 
 dependencies {
-    compile 'net.simforge:simforge-commons:latest.release'
-    compile 'net.simforge:simforge-atmosphere:latest.release'
-    compile 'net.simforge:refdata-airports:latest.release'
+    implementation 'net.simforge:simforge-commons:latest.release'
+    implementation 'net.simforge:simforge-atmosphere:latest.release'
+    implementation 'net.simforge:refdata-airports:latest.release'
 
-    compile 'org.hibernate:hibernate-core:5.0.1.Final'
-    compile 'org.hibernate:hibernate-java8:5.0.1.Final'
+    implementation 'org.hibernate:hibernate-core:5.0.1.Final'
+    implementation 'org.hibernate:hibernate-java8:5.0.1.Final'
 
-    compile 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-api:1.7.30'
 
-    testCompile 'junit:junit:4.11'
+    testImplementation 'junit:junit:4.11'
 }
 
 publishing {
