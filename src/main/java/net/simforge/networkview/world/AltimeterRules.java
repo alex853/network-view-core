@@ -6,6 +6,7 @@ import net.simforge.commons.misc.Geo;
 import net.simforge.refdata.airports.Airport;
 import net.simforge.refdata.airports.Airports;
 
+@Deprecated
 public class AltimeterRules {
     private boolean valid;
     private AltimeterMode altimeterPolicy;

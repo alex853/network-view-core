@@ -1,6 +1,8 @@
 package net.simforge.networkview.world;
 
+@Deprecated
 public class ReferenceData {
+    @Deprecated
     public static double getMaxEndurance(String aircraftType) {
         // todo AK implement kind of database
 
