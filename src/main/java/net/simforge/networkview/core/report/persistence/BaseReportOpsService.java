@@ -139,10 +139,11 @@ public class BaseReportOpsService implements ReportOpsService {
         BM.start("BaseReportOpsService.loadPilotPositionsSinceTill");
         try (Session session = getSession()) {
             return session
-                    .createQuery("from ReportPilotPosition " +
-                            "where pilotNumber = :pilotNumber " +
-                            "  and report.report between :sinceReport and :tillReport " +
-                            "order by report.report")
+                    .createQuery("from ReportPilotPosition p " +
+                            "join fetch p.report r " +
+                            "where p.pilotNumber = :pilotNumber " +
+                            "  and r.report between :sinceReport and :tillReport " +
+                            "order by r.report")
                     .setInteger("pilotNumber", pilotNumber)
                     .setString("sinceReport", sinceReport.getReport())
                     .setString("tillReport", tillReport.getReport())
