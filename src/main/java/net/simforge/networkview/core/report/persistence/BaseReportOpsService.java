@@ -44,6 +44,19 @@ public class BaseReportOpsService implements ReportOpsService {
     }
 
     @Override
+    public Report loadLastReport() {
+        BM.start("BaseReportOpsService.loadLastReport");
+        try (Session session = getSession()) {
+            return (Report) session
+                    .createQuery("from Report where parsed = true order by report desc")
+                    .setMaxResults(1)
+                    .uniqueResult();
+        } finally {
+            BM.stop();
+        }
+    }
+
+    @Override
     public Report loadNextReport(String report) {
         BM.start("BaseReportOpsService.loadNextReport");
         try (Session session = getSession()) {

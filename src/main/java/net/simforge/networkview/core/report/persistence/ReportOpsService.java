@@ -7,6 +7,8 @@ import java.util.List;
 public interface ReportOpsService {
     Report loadFirstReport();
 
+    Report loadLastReport();
+
     Report loadNextReport(String report);
 
     Report loadReport(long reportId);

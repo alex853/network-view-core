@@ -83,6 +83,11 @@ public class CsvSnapshotReportOpsService implements ReportOpsService {
     }
 
     @Override
+    public Report loadLastReport() {
+        return !reports.isEmpty() ? reports.get(reports.size() - 1) : null;
+    }
+
+    @Override
     public Report loadNextReport(String report) {
         for (int i = 0; i < reports.size(); i++) {
             Report eachReport = reports.get(i);
