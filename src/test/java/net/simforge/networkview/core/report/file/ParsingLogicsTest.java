@@ -60,10 +60,29 @@ public class ParsingLogicsTest extends TestCase {
 
     //== parseAircraftType tests =======================================================================================
 
+    public void testParseAircraftType_null() {
+        assertNull(ParsingLogics.parseAircraftType(null));
+    }
+
+    public void testParseAircraftType_empty() {
+        assertNull(ParsingLogics.parseAircraftType(""));
+    }
+
+    public void testParseAircraftType_startsWithSlash() {
+        assertEquals("A321", ParsingLogics.parseAircraftType("/A321"));
+    }
+
+    public void testParseAircraftType_slashMinus() {
+        assertNull(ParsingLogics.parseAircraftType("/-"));
+    }
+
+    public void testParseAircraftType_includingQuestionMark() {
+        assertEquals("B407", ParsingLogics.parseAircraftType("B407/?-VGDW/C"));
+    }
+
     public void testParseAircraftType_B_T154_G() {
         assertEquals("T154", ParsingLogics.parseAircraftType("B/T154/G"));
     }
-
     public void testParseAircraftType_A320_G() {
         assertEquals("A320", ParsingLogics.parseAircraftType("A320/G"));
     }

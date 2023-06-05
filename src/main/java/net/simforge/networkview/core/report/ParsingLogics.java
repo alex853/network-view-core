@@ -64,7 +64,7 @@ public class ParsingLogics {
     }
 
     public static String parseAircraftType(String fpAircraft) {
-        if (fpAircraft == null) {
+        if (fpAircraft == null || fpAircraft.length() == 0) {
             return null;
         }
 
@@ -78,6 +78,9 @@ public class ParsingLogics {
         // We split it by '/' symbol and the longest section will be aircraft type
 
         String[] strs = fpAircraft.split("/");
+        if (strs.length == 0) {
+            return null;
+        }
         String result = strs[0];
         for (i = 1; i < strs.length; i++) {
             if (result.length() < strs[i].length()) {
