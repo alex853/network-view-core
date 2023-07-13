@@ -11,9 +11,25 @@ import java.util.Scanner;
 
 public class MakeSnapshot {
     public static void main(String[] args) throws IOException {
-        System.out.print("Enter pilot number: ");
+        System.out.print("Enter pilot number  : ");
         Scanner in = new Scanner(System.in);
         int pilotNumber = in.nextInt();
+
+        System.out.print("[a]ll/[d]ate/[r]ange: ");
+        String rangeCode = in.next().toLowerCase();
+
+        String fromDate = null;
+        String toDate = null;
+
+        if ("d".equals(rangeCode)) {
+            System.out.print("Date                : ");
+            fromDate = toDate = in.next();
+        } else if ("r".equals(rangeCode)) {
+            System.out.print("From date           : ");
+            fromDate = in.next();
+            System.out.print("To date             : ");
+            toDate = in.next();
+        }
 
         Csv csv = new Csv();
         CsvSnapshotReportOpsService.addColumns(csv);
@@ -26,11 +42,28 @@ public class MakeSnapshot {
 
         int reportsAmount = 0;
         while (currentReport != null) {
-            System.out.println("    Report " + currentReport.getReport());
-            reportsAmount++;
-            ReportPilotPosition reportPilotPosition = reportOpsService.loadPilotPosition(pilotNumber, currentReport);
-            CsvSnapshotReportOpsService.addRow(csv, currentReport, reportPilotPosition);
-            currentReport = reportOpsService.loadNextReport(currentReport.getReport());
+            final String reportTimestamp = currentReport.getReport();
+            final boolean addPosition;
+            if (fromDate != null) {
+                if (reportTimestamp.compareTo(fromDate) < 0) {
+                    addPosition = false;
+                } else if (reportTimestamp.substring(0, toDate.length()).compareTo(toDate) > 0) {
+                    addPosition = false;
+                } else {
+                    addPosition = true;
+                }
+            } else { // we are in All mode
+                addPosition = true;
+            }
+
+            System.out.println("    Report " + reportTimestamp + "        " + (addPosition ? "ADDED" : "skipped"));
+
+            if (addPosition) {
+                reportsAmount++;
+                ReportPilotPosition reportPilotPosition = reportOpsService.loadPilotPosition(pilotNumber, currentReport);
+                CsvSnapshotReportOpsService.addRow(csv, currentReport, reportPilotPosition);
+            }
+            currentReport = reportOpsService.loadNextReport(reportTimestamp);
         }
         reportSessionManager.dispose();
 
