@@ -16,7 +16,7 @@ public class Ivao20200928172405 extends TestCase {
     // heading on the first row is incorrect
 
     public void test() throws IOException {
-        InputStream is = Class.class.getResourceAsStream("/net/simforge/networkview/core/report/file/ivao-20200928172405.txt");
+        InputStream is = Network.class.getResourceAsStream("/net/simforge/networkview/core/report/file/ivao-20200928172405.txt");
         String content = IOHelper.readInputStream(is);
         ReportFile reportFile = new ReportFile(Network.IVAO, content);
 

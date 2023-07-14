@@ -2,6 +2,7 @@ package net.simforge.networkview.core.report.snapshot;
 
 import net.simforge.commons.io.Csv;
 import net.simforge.commons.io.IOHelper;
+import net.simforge.networkview.core.Network;
 import net.simforge.networkview.core.report.persistence.Report;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ import static org.junit.Assert.fail;
 public class TestCsvSnapshotReportOpsService {
     @Test
     public void test_loadAllReports() throws IOException {
-        InputStream is = Class.class.getResourceAsStream("/net/simforge/networkview/core/report/snapshot/pilot-811636_from-1000000_amount-127321.csv");
+        InputStream is = Network.class.getResourceAsStream("/net/simforge/networkview/core/report/snapshot/pilot-811636_from-1000000_amount-127321.csv");
         String csvContent = IOHelper.readInputStream(is);
         Csv csv = Csv.fromContent(csvContent);
         CsvSnapshotReportOpsService reportOpsService = new CsvSnapshotReportOpsService(csv);

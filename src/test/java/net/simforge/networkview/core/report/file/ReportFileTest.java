@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ReportFileTest extends TestCase {
     public void testVatsimReport() throws IOException {
-        InputStream is = Class.class.getResourceAsStream("/net/simforge/networkview/core/report/file/vatsim-data.txt");
+        InputStream is = Network.class.getResourceAsStream("/net/simforge/networkview/core/report/file/vatsim-data.txt");
         String content = IOHelper.readInputStream(is);
         ReportFile reportFile = new ReportFile(Network.VATSIM, content);
 
@@ -41,7 +41,7 @@ public class ReportFileTest extends TestCase {
     }
 
     public void testIvaoReport() throws IOException {
-        InputStream is = Class.class.getResourceAsStream("/net/simforge/networkview/core/report/file/ivao-20150924055024.txt");
+        InputStream is = Network.class.getResourceAsStream("/net/simforge/networkview/core/report/file/ivao-20150924055024.txt");
         String content = IOHelper.readInputStream(is);
         ReportFile reportFile = new ReportFile(Network.IVAO, content);
 

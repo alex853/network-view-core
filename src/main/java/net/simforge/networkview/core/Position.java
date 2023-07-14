@@ -84,7 +84,9 @@ public class Position {
         if (s.length() <= 10) {
             return s;
         }
-        return s.substring(0, 10);
+        s = s.substring(0, 10);
+        s = s.trim();
+        return s.length() > 0 ? s : null;
     }
 
     public static Position createOfflinePosition(Report report) {

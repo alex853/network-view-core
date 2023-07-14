@@ -19,7 +19,7 @@ public class Ivao20151207212608 extends TestCase {
     // log entry for invalid line can be out of database fields limits, test checks is
 
     public void test() throws IOException {
-        InputStream is = Class.class.getResourceAsStream("/net/simforge/networkview/core/report/file/ivao-20151207212608.txt");
+        InputStream is = Network.class.getResourceAsStream("/net/simforge/networkview/core/report/file/ivao-20151207212608.txt");
         String content = IOHelper.readInputStream(is);
         ReportFile reportFile = new ReportFile(Network.IVAO, content);
 
