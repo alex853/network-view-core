@@ -11,6 +11,7 @@ import net.simforge.networkview.core.report.persistence.Report;
 import net.simforge.networkview.core.report.persistence.ReportPilotPosition;
 import net.simforge.refdata.airports.Airport;
 import net.simforge.refdata.airports.Airports;
+import net.simforge.refdata.airports.DistanceType;
 
 public class Position {
 
@@ -43,7 +44,7 @@ public class Position {
         result.report = reportPilotPosition.getReport().getReport();
         result.coords = new Geo.Coords(reportPilotPosition.getLatitude(), reportPilotPosition.getLongitude());
 
-        Airport nearestAirport = Airports.get().findNearest(result.coords);
+        Airport nearestAirport = Airports.get().findNearest(result.coords, DistanceType.DegreeDifference);
 
         if (reportPilotPosition.getQnhMb() != null) { // VATSIM
             AltimeterRules altimeterRules = AltimeterRules.get(nearestAirport, reportPilotPosition.getQnhMb());
