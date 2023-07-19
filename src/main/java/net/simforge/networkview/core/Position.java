@@ -2,13 +2,13 @@ package net.simforge.networkview.core;
 
 import net.simforge.atmosphere.ActualAltitude;
 import net.simforge.atmosphere.AltimeterMode;
+import net.simforge.atmosphere.AltimeterRules;
 import net.simforge.commons.misc.Geo;
 import net.simforge.commons.misc.Str;
 import net.simforge.networkview.core.report.ParsingLogics;
 import net.simforge.networkview.core.report.ReportInfo;
 import net.simforge.networkview.core.report.persistence.Report;
 import net.simforge.networkview.core.report.persistence.ReportPilotPosition;
-import net.simforge.networkview.world.AltimeterRules;
 import net.simforge.refdata.airports.Airport;
 import net.simforge.refdata.airports.Airports;
 
@@ -46,7 +46,7 @@ public class Position {
         Airport nearestAirport = Airports.get().findNearest(result.coords);
 
         if (reportPilotPosition.getQnhMb() != null) { // VATSIM
-            AltimeterRules altimeterRules = AltimeterRules.get(result.coords, reportPilotPosition.getQnhMb());
+            AltimeterRules altimeterRules = AltimeterRules.get(nearestAirport, reportPilotPosition.getQnhMb());
 
             if (altimeterRules.isValid() && nearestAirport != null) {
                 result.actualAltitude = altimeterRules.getActualAltitude(reportPilotPosition.getAltitude());
