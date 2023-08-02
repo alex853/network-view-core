@@ -30,7 +30,8 @@ public class PositionBenchmark {
         System.out.println("Calculating Position objects");
         long started = System.currentTimeMillis();
         for (int i = 0; i < calculationCount; i++) {
-            Position.create(positions.get(i));
+            //Position.create(positions.get(i));
+            Position.compactify(Position.create(positions.get(i)));
         }
         long finished = System.currentTimeMillis();
 
