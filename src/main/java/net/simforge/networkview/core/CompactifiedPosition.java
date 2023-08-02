@@ -85,13 +85,13 @@ public class CompactifiedPosition implements Position {
 
         Long reportId = reportInfo.getId();
         if (reportId > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Report id '" + reportId + "' is higher than MAX integer value");
         }
         compact.reportId = reportId.intValue();
 
         long epochSeconds = reportInfo.getDt().toEpochSecond(ZoneOffset.UTC);
         if (epochSeconds > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Epoch seconds '" + epochSeconds + "' is higher than MAX integer value");
         }
         compact.reportSeconds = (int) epochSeconds;
     }
@@ -248,7 +248,7 @@ public class CompactifiedPosition implements Position {
         }
 
         if (value.length() > length) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("String value '" + value + "' is too long, max expected length is " + length);
         }
 
         ByteBuffer.wrap(data, offset, value.length()).put(value.getBytes(StandardCharsets.US_ASCII));
