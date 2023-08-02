@@ -3,6 +3,7 @@ package net.simforge.networkview.core;
 import net.simforge.atmosphere.ActualAltitude;
 import net.simforge.atmosphere.AltimeterMode;
 import net.simforge.atmosphere.AltimeterRules;
+import net.simforge.atmosphere.Atmosphere;
 import net.simforge.commons.misc.Geo;
 import net.simforge.networkview.core.report.ParsingLogics;
 import net.simforge.networkview.core.report.ReportInfo;
@@ -11,11 +12,15 @@ import net.simforge.networkview.core.report.persistence.ReportPilotPosition;
 import net.simforge.refdata.airports.Airport;
 import net.simforge.refdata.airports.Airports;
 import net.simforge.refdata.airports.DistanceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class BasicPosition implements Position {
 
-    private long reportId;
-    private String report;
+    private static final Logger log = LoggerFactory.getLogger(BasicPosition.class.getName());
+
+    private final long reportId;
+    private final String report;
     private ReportInfo reportInfo;
 
     private Geo.Coords coords;
@@ -41,14 +46,23 @@ class BasicPosition implements Position {
         Airport nearestAirport = Airports.get().findNearest(this.coords, DistanceType.DegreeDifference);
 
         if (reportPilotPosition.getQnhMb() != null) { // VATSIM
-            AltimeterRules altimeterRules = AltimeterRules.get(nearestAirport, reportPilotPosition.getQnhMb());
+            double correctedQnh = reportPilotPosition.getQnhMb();
+            if (correctedQnh < 900 || correctedQnh > 1100) {
+                correctedQnh = Atmosphere.QNH_STD_PRECISE;
+                log.warn("Pilot {} - Report {} - Reported QNH {} is out of expected range 900..1100, STD QNH will be used instead",
+                        reportPilotPosition.getPilotNumber(),
+                        reportPilotPosition.getReport().getReport(),
+                        reportPilotPosition.getQnhMb());
+            }
+
+            AltimeterRules altimeterRules = AltimeterRules.get(nearestAirport, correctedQnh);
 
             if (altimeterRules.isValid() && nearestAirport != null) {
                 this.actualAltitude = altimeterRules.getActualAltitude(reportPilotPosition.getAltitude());
                 this.actualFL = altimeterRules.formatAltitude(this.actualAltitude);
                 this.onGround = this.actualAltitude < nearestAirport.getElevation() + 200;
             } else {
-                this.actualAltitude = ActualAltitude.get(reportPilotPosition.getAltitude(), reportPilotPosition.getQnhMb()).getActualAltitude();
+                this.actualAltitude = ActualAltitude.get(reportPilotPosition.getAltitude(), correctedQnh).getActualAltitude();
                 this.actualFL = ActualAltitude.formatAltitude(this.actualAltitude, AltimeterMode.STD);
                 this.onGround = false;
             }
