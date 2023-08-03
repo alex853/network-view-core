@@ -3,6 +3,8 @@ package net.simforge.networkview.core;
 import net.simforge.commons.misc.Geo;
 import net.simforge.networkview.core.report.ReportInfo;
 import net.simforge.networkview.core.report.ReportUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 public class CompactifiedPosition implements Position {
+
+    private static final Logger log = LoggerFactory.getLogger(CompactifiedPosition.class.getName());
 
     private static final int DOUBLE_LENGTH = 8;
     private static final int STRING_5_LENGTH = 5;
@@ -248,7 +252,9 @@ public class CompactifiedPosition implements Position {
         }
 
         if (value.length() > length) {
-            throw new IllegalArgumentException("String value '" + value + "' is too long, max expected length is " + length);
+            String newValue = value.substring(0, length);
+            log.error("String value '{}' is longer than expected max length {}, the value will be trimmed to '{}'", value, length, newValue);
+            value = newValue;
         }
 
         ByteBuffer.wrap(data, offset, value.length()).put(value.getBytes(StandardCharsets.US_ASCII));
