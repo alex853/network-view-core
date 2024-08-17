@@ -6,11 +6,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ParsingLogics {
-    private static String[] callsignPatterns = {
+    // see https://en.wikipedia.org/wiki/List_of_aircraft_registration_prefixes
+    private static final String[] callsignPatterns = {
             "[A-Z]{5}", // QWERT
             "[A-Z]-[A-Z]{4}", // Q-WERT
             "[A-Z]{2}-[A-Z]{3}", // QW-ERT
-            "N[0-9]{3}[A-Z]{2}", // N999XX
+
+            "B-?[0-9]{2,4}[A-Z]{0,2}", // China
+            "N[0-9]{1,5}[A-Z]{0,2}", // United States
+
             "[0-9]{5}", // 85123
             "RA[0-9]{5}", // RA85123
     };

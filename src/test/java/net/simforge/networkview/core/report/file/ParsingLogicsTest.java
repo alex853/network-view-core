@@ -58,6 +58,14 @@ public class ParsingLogicsTest extends TestCase {
         assertNull(ParsingLogics.recognizeRegNo("G_DBAAX"));
     }
 
+    public void testRecognizeRegNo_B3077() {
+        assertEquals("B3077", ParsingLogics.recognizeRegNo("B3077"));
+    }
+
+    public void testRecognizeRegNo_N63AC() {
+        assertEquals("N63AC", ParsingLogics.recognizeRegNo("N63AC"));
+    }
+
     //== parseAircraftType tests =======================================================================================
 
     public void testParseAircraftType_null() {
