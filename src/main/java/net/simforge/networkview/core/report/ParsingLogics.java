@@ -17,6 +17,8 @@ public class ParsingLogics {
 
             "[0-9]{5}", // 85123
             "RA[0-9]{5}", // RA85123
+            "[0-9]{4}G", // 8512G
+            "RA[0-9]{4}G", // RA8512G
     };
 
     private static final String REG_PREFIX = "REG/";

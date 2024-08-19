@@ -74,6 +74,18 @@ public class ParsingLogicsTest extends TestCase {
         assertEquals("N567X", ParsingLogics.recognizeRegNo("N567X"));
     }
 
+    public void testRecognizeRegNo_N1R() {
+        assertEquals("N1R", ParsingLogics.recognizeRegNo("N1R"));
+    }
+
+    public void testRecognizeRegNo_N234() {
+        assertEquals("N234", ParsingLogics.recognizeRegNo("N234"));
+    }
+
+    public void testRecognizeRegNo_RA2439G() {
+        assertEquals("RA2439G", ParsingLogics.recognizeRegNo("RA2439G"));
+    }
+
     //== parseAircraftType tests =======================================================================================
 
     public void testParseAircraftType_null() {
