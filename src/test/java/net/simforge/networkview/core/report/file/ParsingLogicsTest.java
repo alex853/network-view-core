@@ -86,6 +86,14 @@ public class ParsingLogicsTest extends TestCase {
         assertEquals("RA2439G", ParsingLogics.recognizeRegNo("RA2439G"));
     }
 
+    public void testRecognizeRegNo_HK5078() {
+        assertEquals("HK5078", ParsingLogics.recognizeRegNo("HK5078"));
+    }
+
+    public void testRecognizeRegNo_HK4058G() {
+        assertEquals("HK4058G", ParsingLogics.recognizeRegNo("HK4058G"));
+    }
+
     //== parseAircraftType tests =======================================================================================
 
     public void testParseAircraftType_null() {
