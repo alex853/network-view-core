@@ -12,6 +12,8 @@ public class ParsingLogics {
             "[A-Z]-[A-Z]{4}", // Q-WERT
             "[A-Z]{2}-[A-Z]{3}", // QW-ERT
 
+
+
             // China
             "B-?[0-9]{4}",
             "B-?[0-9]{3}[A-Z]{1}",
@@ -21,6 +23,17 @@ public class ParsingLogics {
             "HK-?[0-9]{4}",
             "HK-?[0-9]{4}-?[A-Z]{1}",
 
+            // Israel
+            "4X-?[A-Z]{3}",
+
+            // Japan
+            "JA[0-9]{4}",
+            "JA[0-9]{3}[A-Z]{1}",
+            "JA[0-9]{2}[A-Z]{2}",
+
+
+
+            // todo rework
             "N[0-9]{1,5}[A-Z]{0,2}", // United States
 
             "[0-9]{5}", // 85123
