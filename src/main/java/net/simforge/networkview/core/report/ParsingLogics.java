@@ -31,6 +31,10 @@ public class ParsingLogics {
             "JA[0-9]{3}[A-Z]{1}",
             "JA[0-9]{2}[A-Z]{2}",
 
+            // San Marino
+            "T7-?[A-Z]{3,5}",
+            "T7-?[0-9]{3,5}",
+
 
 
             // todo rework
