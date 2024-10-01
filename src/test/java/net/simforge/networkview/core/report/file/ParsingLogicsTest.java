@@ -82,6 +82,14 @@ public class ParsingLogicsTest extends TestCase {
         assertEquals("N234", ParsingLogics.recognizeRegNo("N234"));
     }
 
+    public void testRecognizeRegNo_RA24390() {
+        assertEquals("RA24390", ParsingLogics.recognizeRegNo("RA24390"));
+    }
+
+    public void testRecognizeRegNo_RA_24390() {
+        assertEquals("RA-24390", ParsingLogics.recognizeRegNo("RA-24390"));
+    }
+
     public void testRecognizeRegNo_RA2439G() {
         assertEquals("RA2439G", ParsingLogics.recognizeRegNo("RA2439G"));
     }
@@ -120,6 +128,14 @@ public class ParsingLogicsTest extends TestCase {
 
     public void testRecognizeRegNo_T7STAR() {
         assertEquals("T7STAR", ParsingLogics.recognizeRegNo("T7STAR"));
+    }
+
+    public void testRecognizeRegNo_YV2392() {
+        assertEquals("YV2392", ParsingLogics.recognizeRegNo("YV2392"));
+    }
+
+    public void testRecognizeRegNo_YV537T() {
+        assertEquals("YV537T", ParsingLogics.recognizeRegNo("YV537T"));
     }
 
     //== parseAircraftType tests =======================================================================================

@@ -13,6 +13,11 @@ public class ParsingLogics {
             "[A-Z]{2}-[A-Z]{3}", // QW-ERT
 
 
+            // Armenia
+            "EK-?[0-9]{5}", // EK12345
+
+            // Bahamas
+            "C6-?[A-Z]{3}",
 
             // China
             "B-?[0-9]{4}",
@@ -31,19 +36,28 @@ public class ParsingLogics {
             "JA[0-9]{3}[A-Z]{1}",
             "JA[0-9]{2}[A-Z]{2}",
 
+            // Russia
+            "RA-?[0-9]{5}", // RA85123
+            "RA-?[0-9]{4}G", // RA8512G
+
             // San Marino
             "T7-?[A-Z]{3,5}",
             "T7-?[0-9]{3,5}",
+
+            // Tanzania
+            "5H-?[A-Z]{3}",
+
+            // Venezuela
+            "YV[0-9]{4}",
+            "YV[0-9]{3}T",
+            "YV[0-9]{3}E",
+            "YVO[0-9]{3}",
 
 
 
             // todo rework
             "N[0-9]{1,5}[A-Z]{0,2}", // United States
 
-            "[0-9]{5}", // 85123
-            "RA[0-9]{5}", // RA85123
-            "[0-9]{4}G", // 8512G
-            "RA[0-9]{4}G", // RA8512G
     };
 
     private static final String REG_PREFIX = "REG/";
