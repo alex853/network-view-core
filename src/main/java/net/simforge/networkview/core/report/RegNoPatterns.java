@@ -151,7 +151,7 @@ public class RegNoPatterns {
             rule("Burundi", "9U-aaa"),
             rule("Cambodia", "XU-aaa"),
             rule("Cameroon", "TJ-aaa"),
-            rule("Canada", "C-aaaa"),
+            rule("Canada", "C-Faaa", "C-Gaaa", "C-Iaaa"),
             rule("Cape Verde", "D4-aaa"),
             rule("Cayman Islands", "VP-Caa", "VQ-Caa"),
             rule("Central African Republic", "TL-aaa"),
