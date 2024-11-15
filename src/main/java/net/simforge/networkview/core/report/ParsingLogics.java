@@ -2,63 +2,7 @@ package net.simforge.networkview.core.report;
 
 import net.simforge.networkview.core.report.persistence.ReportPilotPosition;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class ParsingLogics {
-    // see https://en.wikipedia.org/wiki/List_of_aircraft_registration_prefixes
-    private static final String[] callsignPatterns = {
-            "[A-Z]{5}", // QWERT
-            "[A-Z]-[A-Z]{4}", // Q-WERT
-            "[A-Z]{2}-[A-Z]{3}", // QW-ERT
-
-
-            // Armenia
-            "EK-?[0-9]{5}", // EK12345
-
-            // Bahamas
-            "C6-?[A-Z]{3}",
-
-            // China
-            "B-?[0-9]{4}",
-            "B-?[0-9]{3}[A-Z]{1}",
-            "B-?[0-9]{2}[A-Z]{2}",
-
-            // Colombia
-            "HK-?[0-9]{4}",
-            "HK-?[0-9]{4}-?[A-Z]{1}",
-
-            // Israel
-            "4X-?[A-Z]{3}",
-
-            // Japan
-            "JA[0-9]{4}",
-            "JA[0-9]{3}[A-Z]{1}",
-            "JA[0-9]{2}[A-Z]{2}",
-
-            // Russia
-            "RA-?[0-9]{5}", // RA85123
-            "RA-?[0-9]{4}G", // RA8512G
-
-            // San Marino
-            "T7-?[A-Z]{3,5}",
-            "T7-?[0-9]{3,5}",
-
-            // Tanzania
-            "5H-?[A-Z]{3}",
-
-            // Venezuela
-            "YV[0-9]{4}",
-            "YV[0-9]{3}T",
-            "YV[0-9]{3}E",
-            "YVO[0-9]{3}",
-
-
-
-            // todo rework
-            "N[0-9]{1,5}[A-Z]{0,2}", // United States
-
-    };
 
     private static final String REG_PREFIX = "REG/";
 
@@ -68,40 +12,25 @@ public class ParsingLogics {
             fpRemarks = fpRemarks.toUpperCase();
             int index = fpRemarks.indexOf(REG_PREFIX);
             if (index != -1) {
-                String str = fpRemarks.substring(index + REG_PREFIX.length());
-                reg = recognizeRegNo(str);
+                final String str1 = fpRemarks.substring(index + REG_PREFIX.length());
+                final int spaceIndex = str1.indexOf(' ');
+                final String str2 = spaceIndex >= 0 ? str1.substring(0, spaceIndex) : str1;
+                if (RegNoPatterns.isRegNo(str2)) {
+                    reg = str2;
+                }
             }
         }
 
         if (reg == null) {
-            reg = recognizeRegNo(position.getCallsign());
+            if (RegNoPatterns.isRegNo(position.getCallsign())) {
+                reg = position.getCallsign();
+            }
         }
 
         if (reg != null) {
             int i = reg.indexOf('-');
             if (i != -1) {
                 reg = reg.substring(0, i) + reg.substring(i + 1);
-            }
-        }
-
-        return reg;
-    }
-
-    public static String recognizeRegNo(String str) {
-        if (str == null) {
-            return null;
-        }
-
-        String reg = null;
-        for (String eachPattern : callsignPatterns) {
-            if (str.matches(eachPattern + "[ /+]?.*")) {
-                Pattern pattern = Pattern.compile(eachPattern);
-                Matcher matcher = pattern.matcher(str);
-                //noinspection ResultOfMethodCallIgnored
-                matcher.find();
-                int s = matcher.start();
-                int e = matcher.end();
-                reg = str.substring(s, e);
             }
         }
 
