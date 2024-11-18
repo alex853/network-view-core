@@ -116,4 +116,16 @@ public class RegNoPatternsTest extends TestCase {
     public void test_isRegNo_YV537T() {
         assertTrue(RegNoPatterns.isRegNo("YV537T"));
     }
+
+    public void test_isRegNo_VHOQH() {
+        assertTrue(RegNoPatterns.isRegNo("VHOQH"));
+    }
+
+    public void test_isRegNo_CSTNK() {
+        assertTrue(RegNoPatterns.isRegNo("CSTNK"));
+    }
+
+    public void test_isRegNo_DQFAD() {
+        assertTrue(RegNoPatterns.isRegNo("DQFAD"));
+    }
 }

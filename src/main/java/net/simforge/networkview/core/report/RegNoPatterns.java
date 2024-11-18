@@ -188,7 +188,7 @@ public class RegNoPatterns {
             rule("Gabon", "TR-aaa"),
             rule("Gambia", "C5-aaa"),
             rule("Georgia", "4L-aaa", "4L-ddddd"),
-            rule("Germany", "D-aaaa", "D-dddd"),
+            rule("Germany", "D-Aaaa", "D-Baaa", "D-Caaa", "D-Eaaa", "D-Faaa", "D-Gaaa", "D-Haaa", "D-Iaaa", "D-Kaaa", "D-Laaa", "D-Maaa", "D-Naaa", "D-Oaaa", "D-dddd"),
             rule("Ghana", "9G-aaa"),
             rule("Gibraltar", "VP-Gaa"),
             rule("Greece", "SX-aaa", "SX-ddd"),
