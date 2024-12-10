@@ -167,7 +167,7 @@ public class RegNoPatterns {
             rule("Croatia", "9A-aaa"),
             rule("Cuba", "CU-adddd"),
             rule("Cyprus", "5B-aaa"),
-            rule("Czech Republic", "OK-aaa", "OK-aaa dd", "OK-dddd", "OK-addd", "OK-addda"),
+            rule("Czech Republic", "OK-aaa", /*"OK-aaa dd",*/ "OK-dddd", "OK-addd", "OK-addda"),
             rule("Denmark", "OY-aaa"),
             rule("Djibouti", "J2-aaa"),
             rule("Dominica", "J7-aaa"),
