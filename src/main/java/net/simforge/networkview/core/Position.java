@@ -67,7 +67,7 @@ public interface Position {
         return new BasicPosition(report);
     }
 
-    static Position compactify(Position position) {
+    static CompactifiedPosition compactify(Position position) {
         return CompactifiedPosition.from(position);
     }
 }

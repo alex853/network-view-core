@@ -10,6 +10,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 
 public class CompactifiedPosition implements Position {
 
@@ -43,7 +44,10 @@ public class CompactifiedPosition implements Position {
 
     private byte[] data;
 
-    static Position from(Position source) {
+    private CompactifiedPosition() {
+    }
+
+    static CompactifiedPosition from(Position source) {
         if (source.isPositionKnown()) {
             return buildKnownPosition(source);
         } else {
@@ -51,7 +55,7 @@ public class CompactifiedPosition implements Position {
         }
     }
 
-    private static Position buildKnownPosition(Position source) {
+    private static CompactifiedPosition buildKnownPosition(Position source) {
         CompactifiedPosition compact = new CompactifiedPosition();
 
         copyReportInfo(compact, source);
@@ -76,7 +80,7 @@ public class CompactifiedPosition implements Position {
         return compact;
     }
 
-    private static Position buildUnknownPosition(Position source) {
+    private static CompactifiedPosition buildUnknownPosition(Position source) {
         CompactifiedPosition compact = new CompactifiedPosition();
 
         copyReportInfo(compact, source);
@@ -100,7 +104,8 @@ public class CompactifiedPosition implements Position {
         compact.reportSeconds = (int) epochSeconds;
     }
 
-    private CompactifiedPosition() {
+    public byte[] asBytes() {
+        return Arrays.copyOf(data, data.length);
     }
 
     @Override
