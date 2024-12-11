@@ -37,7 +37,8 @@ public class CompactifiedPosition implements Position {
     private static final int FP_AIRCRAFT_TYPE_INDEX = REG_NO_INDEX + STRING_7_LENGTH;
     private static final int FP_DEPARTURE_INDEX = FP_AIRCRAFT_TYPE_INDEX + STRING_5_LENGTH;
     private static final int FP_DESTINATION_INDEX = FP_DEPARTURE_INDEX + STRING_5_LENGTH;
-    private static final int TOTAL_LENGTH = FP_DESTINATION_INDEX + STRING_5_LENGTH;
+
+    public static final int TOTAL_LENGTH = FP_DESTINATION_INDEX + STRING_5_LENGTH;
 
     private int reportId;
     private int reportSeconds;
@@ -106,6 +107,15 @@ public class CompactifiedPosition implements Position {
 
     public byte[] asBytes() {
         return Arrays.copyOf(data, data.length);
+    }
+
+    public static CompactifiedPosition fromBytes(final byte[] data) {
+        if (data.length != TOTAL_LENGTH) {
+            throw new IllegalArgumentException("wrong data length");
+        }
+        final CompactifiedPosition result = new CompactifiedPosition();
+        result.data = Arrays.copyOf(data, data.length);
+        return result;
     }
 
     @Override
