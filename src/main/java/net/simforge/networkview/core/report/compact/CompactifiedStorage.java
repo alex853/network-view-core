@@ -22,7 +22,7 @@ public class CompactifiedStorage {
 
         try {
             if (!Files.exists(root)) {
-                Files.createDirectory(root);
+                Files.createDirectories(root);
             }
         } catch (IOException e) {
             throw new RuntimeException("unable to create root folder", e);
@@ -34,10 +34,17 @@ public class CompactifiedStorage {
     }
 
     public void savePositions(final String report, final List<Position> positions) {
+        final Path reportPathTmp = root.resolve(report + ".tmp");
         final Path reportPath = root.resolve(report);
 
-        try (final FileOutputStream fos = new FileOutputStream(reportPath.toFile())) {
+        try (final FileOutputStream fos = new FileOutputStream(reportPathTmp.toFile())) {
             V1Ops.saveToStream(positions, fos);
+        } catch (final IOException e) {
+            throw new RuntimeException("unable to save compactified report data", e);
+        }
+
+        try {
+            Files.move(reportPathTmp, reportPath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
         } catch (final IOException e) {
             throw new RuntimeException("unable to save compactified report data", e);
         }
@@ -58,7 +65,7 @@ public class CompactifiedStorage {
     }
 
     public String getFirstReport() throws IOException {
-        final List<String> allReports = listAllReportFiles();
+        final List<String> allReports = listAllReports();
         if (allReports.size() == 0) {
             return null;
         }
@@ -66,7 +73,7 @@ public class CompactifiedStorage {
     }
 
     public String getNextReport(String previousReport) throws IOException {
-        final List<String> allReports = listAllReportFiles();
+        final List<String> allReports = listAllReports();
         if (allReports.size() == 0) {
             return null;
         }
@@ -81,15 +88,15 @@ public class CompactifiedStorage {
     }
 
     public String getLastReport() throws IOException {
-        final List<String> allReports = listAllReportFiles();
+        final List<String> allReports = listAllReports();
         if (allReports.size() == 0) {
             return null;
         }
         return allReports.get(allReports.size() - 1);
     }
 
-    private List<String> listAllReportFiles() throws IOException {
-        BM.start("CompactifiedStorage.listAllReportFiles");
+    public List<String> listAllReports() throws IOException {
+        BM.start("CompactifiedStorage.listAllReports");
         try {
             final List<String> reports = new ArrayList<>();
 
