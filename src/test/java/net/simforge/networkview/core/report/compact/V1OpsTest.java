@@ -15,10 +15,8 @@ import static org.junit.Assert.assertTrue;
 
 public class V1OpsTest {
     @Test
-    @Ignore
     public void test_load_save_load() throws IOException {
-        final InputStream in = V1OpsTest.class.getResourceAsStream("/net/simforge/networkview/core/report/compact/20241211205134");
-        final List<Position> originalPositions = V1Ops.loadFromStream(in);
+        final List<Position> originalPositions = SampleData.loadSamplePositions();
 
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         V1Ops.saveToStream(originalPositions, baos);

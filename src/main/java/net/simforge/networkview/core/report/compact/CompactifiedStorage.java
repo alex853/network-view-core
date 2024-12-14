@@ -19,38 +19,28 @@ public class CompactifiedStorage {
 
     private CompactifiedStorage(final String rootPath, final Network network) {
         root = Paths.get(rootPath, network.name(), "compactified");
-
-        try {
-            if (!Files.exists(root)) {
-                Files.createDirectories(root);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("unable to create root folder", e);
-        }
     }
 
     public static CompactifiedStorage getStorage(final String storageRoot, final Network network) {
         return new CompactifiedStorage(storageRoot, network);
     }
 
-    public void savePositions(final String report, final List<Position> positions) {
+    public void savePositions(final String report, final List<Position> positions) throws IOException {
         final Path reportPathTmp = root.resolve(report + ".tmp");
         final Path reportPath = root.resolve(report);
 
+        if (!Files.exists(root)) {
+            Files.createDirectories(root);
+        }
+
         try (final FileOutputStream fos = new FileOutputStream(reportPathTmp.toFile())) {
             V1Ops.saveToStream(positions, fos);
-        } catch (final IOException e) {
-            throw new RuntimeException("unable to save compactified report data", e);
         }
 
-        try {
-            Files.move(reportPathTmp, reportPath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
-        } catch (final IOException e) {
-            throw new RuntimeException("unable to save compactified report data", e);
-        }
+        Files.move(reportPathTmp, reportPath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    public List<Position> loadPositions(final String report) {
+    public List<Position> loadPositions(final String report) throws IOException {
         final Path reportPath = root.resolve(report);
 
         if (!Files.exists(reportPath)) {
@@ -59,8 +49,6 @@ public class CompactifiedStorage {
 
         try (final FileInputStream fis = new FileInputStream(reportPath.toFile())) {
             return V1Ops.loadFromStream(fis);
-        } catch (final IOException e) {
-            throw new RuntimeException("unable to load compactified report data", e);
         }
     }
 
