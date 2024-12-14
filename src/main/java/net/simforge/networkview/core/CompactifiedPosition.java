@@ -19,16 +19,21 @@ public class CompactifiedPosition implements Position {
     private static final int DOUBLE_LENGTH = 8;
     private static final int STRING_5_LENGTH = 5;
     private static final int STRING_7_LENGTH = 7;
+
+    private static final int PILOT_NUMBER_LENGTH = 3;
     private static final int ACTUAL_ALTITUDE_LENGTH = 3;
+    private static final int HEADING_LENGTH = 2;
     private static final int GROUNDSPEED_LENGTH = 2;
 
     private static final byte IS_ON_GROUND_MASK = 0x01;
     private static final byte IS_IN_AIRPORT_MASK = 0x02;
 
-    private static final int FLAGS_INDEX = 0;
+    private static final int PILOT_NUMBER_INDEX = 0;
+    private static final int FLAGS_INDEX = PILOT_NUMBER_INDEX + PILOT_NUMBER_LENGTH;
     private static final int COORDS_LAT_INDEX = FLAGS_INDEX + 1;
     private static final int COORDS_LON_INDEX = COORDS_LAT_INDEX + DOUBLE_LENGTH;
-    private static final int ACTUAL_ALTITUDE_INDEX = COORDS_LON_INDEX + DOUBLE_LENGTH;
+    private static final int HEADING_INDEX = COORDS_LON_INDEX + DOUBLE_LENGTH;
+    private static final int ACTUAL_ALTITUDE_INDEX = HEADING_INDEX + HEADING_LENGTH;
     private static final int ACTUAL_FL_INDEX = ACTUAL_ALTITUDE_INDEX + ACTUAL_ALTITUDE_LENGTH;
     private static final int AIRPORT_ICAO_INDEX = ACTUAL_FL_INDEX + STRING_5_LENGTH;
     private static final int GROUNDSPEED_INDEX = AIRPORT_ICAO_INDEX + STRING_5_LENGTH;
@@ -64,8 +69,10 @@ public class CompactifiedPosition implements Position {
         compact.data = new byte[TOTAL_LENGTH];
 
         Geo.Coords coords = source.getCoords();
+        putInteger(compact.data, source.getPilotNumber(), PILOT_NUMBER_INDEX, PILOT_NUMBER_LENGTH);
         ByteBuffer.wrap(compact.data, COORDS_LAT_INDEX, DOUBLE_LENGTH).putDouble(coords.getLat());
         ByteBuffer.wrap(compact.data, COORDS_LON_INDEX, DOUBLE_LENGTH).putDouble(coords.getLon());
+        putInteger(compact.data, source.getHeading(), HEADING_INDEX, HEADING_LENGTH);
         putInteger(compact.data, source.getActualAltitude(), ACTUAL_ALTITUDE_INDEX, ACTUAL_ALTITUDE_LENGTH);
         putString(compact.data, source.getActualFL(), ACTUAL_FL_INDEX, STRING_5_LENGTH);
         putBoolean(compact.data, source.isOnGround(), IS_ON_GROUND_MASK);
@@ -135,11 +142,23 @@ public class CompactifiedPosition implements Position {
     }
 
     @Override
+    public int getPilotNumber() {
+        checkPositionKnown();
+        return getInteger(data, PILOT_NUMBER_INDEX, PILOT_NUMBER_LENGTH);
+    }
+
+    @Override
     public Geo.Coords getCoords() {
         checkPositionKnown();
         return new Geo.Coords(
                 ByteBuffer.wrap(data, COORDS_LAT_INDEX, DOUBLE_LENGTH).getDouble(),
                 ByteBuffer.wrap(data, COORDS_LON_INDEX, DOUBLE_LENGTH).getDouble());
+    }
+
+    @Override
+    public int getHeading() {
+        checkPositionKnown();
+        return getInteger(data, HEADING_INDEX, HEADING_LENGTH);
     }
 
     @Override

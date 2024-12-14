@@ -9,7 +9,11 @@ import net.simforge.networkview.core.report.persistence.ReportPilotPosition;
 public interface Position {
     ReportInfo getReportInfo();
 
+    int getPilotNumber();
+
     Geo.Coords getCoords();
+
+    int getHeading();
 
     int getActualAltitude();
 

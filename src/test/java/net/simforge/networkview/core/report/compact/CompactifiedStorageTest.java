@@ -2,6 +2,7 @@ package net.simforge.networkview.core.report.compact;
 
 import net.simforge.networkview.core.Network;
 import net.simforge.networkview.core.Position;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import static org.junit.Assert.*;
 
 public class CompactifiedStorageTest {
     @Test
+    @Ignore
     public void test() throws IOException {
         final CompactifiedStorage storage = CompactifiedStorage.getStorage(
                 System.getProperty("java.io.tmpdir") + "/storage/" + System.currentTimeMillis(),

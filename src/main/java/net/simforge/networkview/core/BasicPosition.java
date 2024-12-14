@@ -23,7 +23,10 @@ class BasicPosition implements Position {
     private final String report;
     private ReportInfo reportInfo;
 
+    private int pilotNumber;
+
     private Geo.Coords coords;
+    private int heading;
     private int actualAltitude;
     private String actualFL;
     private boolean onGround;
@@ -41,7 +44,11 @@ class BasicPosition implements Position {
     BasicPosition(ReportPilotPosition reportPilotPosition) {
         this.reportId = reportPilotPosition.getReport().getId();
         this.report = reportPilotPosition.getReport().getReport();
+
+        this.pilotNumber = reportPilotPosition.getPilotNumber();
+
         this.coords = new Geo.Coords(reportPilotPosition.getLatitude(), reportPilotPosition.getLongitude());
+        this.heading = reportPilotPosition.getHeading();
 
         Airport nearestAirport = Airports.get().findNearest(this.coords, DistanceType.DegreeDifference);
 
@@ -108,9 +115,21 @@ class BasicPosition implements Position {
     }
 
     @Override
+    public int getPilotNumber() {
+        checkPositionKnown();
+        return pilotNumber;
+    }
+
+    @Override
     public Geo.Coords getCoords() {
         checkPositionKnown();
         return coords;
+    }
+
+    @Override
+    public int getHeading() {
+        checkPositionKnown();
+        return heading;
     }
 
     @Override
