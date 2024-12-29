@@ -26,61 +26,86 @@ public class CompactifiedStorage {
     }
 
     public void savePositions(final String report, final List<Position> positions) throws IOException {
-        final Path reportPathTmp = root.resolve(report + ".tmp");
-        final Path reportPath = root.resolve(report);
+        BM.start("CompactifiedStorage.savePositions");
+        try {
+            final Path reportPathTmp = root.resolve(report + ".tmp");
+            final Path reportPath = root.resolve(report);
 
-        if (!Files.exists(root)) {
-            Files.createDirectories(root);
+            if (!Files.exists(root)) {
+                Files.createDirectories(root);
+            }
+
+            try (final FileOutputStream fos = new FileOutputStream(reportPathTmp.toFile())) {
+                V1Ops.saveToStream(positions, fos);
+            }
+
+            Files.move(reportPathTmp, reportPath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } finally {
+            BM.stop();
         }
-
-        try (final FileOutputStream fos = new FileOutputStream(reportPathTmp.toFile())) {
-            V1Ops.saveToStream(positions, fos);
-        }
-
-        Files.move(reportPathTmp, reportPath, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
     }
 
     public List<Position> loadPositions(final String report) throws IOException {
-        final Path reportPath = root.resolve(report);
+        BM.start("CompactifiedStorage.loadPositions");
+        try {
+            final Path reportPath = root.resolve(report);
 
-        if (!Files.exists(reportPath)) {
-            throw new IllegalArgumentException("unable to find report " + report);
-        }
+            if (!Files.exists(reportPath)) {
+                throw new IllegalArgumentException("unable to find report " + report);
+            }
 
-        try (final FileInputStream fis = new FileInputStream(reportPath.toFile())) {
-            return V1Ops.loadFromStream(fis);
+            try (final FileInputStream fis = new FileInputStream(reportPath.toFile())) {
+                return V1Ops.loadFromStream(fis);
+            }
+        } finally {
+            BM.stop();
         }
     }
 
     public String getFirstReport() throws IOException {
-        final List<String> allReports = listAllReports();
-        if (allReports.size() == 0) {
-            return null;
+        BM.start("CompactifiedStorage.getFirstReport");
+        try {
+            final List<String> allReports = listAllReports();
+            if (allReports.size() == 0) {
+                return null;
+            }
+            return allReports.get(0);
+        } finally {
+            BM.stop();
         }
-        return allReports.get(0);
     }
 
     public String getNextReport(String previousReport) throws IOException {
-        final List<String> allReports = listAllReports();
-        if (allReports.size() == 0) {
-            return null;
+        BM.start("CompactifiedStorage.getNextReport");
+        try {
+            final List<String> allReports = listAllReports();
+            if (allReports.size() == 0) {
+                return null;
+            }
+            final int index = allReports.indexOf(previousReport);
+            if (index == -1) {
+                return null;
+            }
+            if (index == allReports.size() - 1) {
+                return null;
+            }
+            return allReports.get(index + 1);
+        } finally {
+            BM.stop();
         }
-        final int index = allReports.indexOf(previousReport);
-        if (index == -1) {
-            return null;
-        }
-        if (index == allReports.size() - 1) {
-            return null;
-        }
-        return allReports.get(index + 1);
     }
 
     public String getLastReport() throws IOException {
-        final List<String> allReports = listAllReports();
-        if (allReports.size() == 0) {
-            return null;
+        BM.start("CompactifiedStorage.getLastReport");
+        try {
+            final List<String> allReports = listAllReports();
+            if (allReports.size() == 0) {
+                return null;
+            }
+            return allReports.get(allReports.size() - 1);
+        } finally {
+            BM.stop();
         }
-        return allReports.get(allReports.size() - 1);
     }
 
     public List<String> listAllReports() throws IOException {
@@ -130,6 +155,11 @@ public class CompactifiedStorage {
     }
 
     public void removeReport(final String report) throws IOException {
-        Files.deleteIfExists(root.resolve(report));
+        BM.start("CompactifiedStorage.removeReport");
+        try {
+            Files.deleteIfExists(root.resolve(report));
+        } finally {
+            BM.stop();
+        }
     }
 }
