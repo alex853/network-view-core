@@ -67,7 +67,7 @@ class BasicPosition implements Position {
             if (altimeterRules.isValid() && nearestAirport != null) {
                 this.actualAltitude = altimeterRules.getActualAltitude(reportPilotPosition.getAltitude());
                 this.actualFL = altimeterRules.formatAltitude(this.actualAltitude);
-                this.onGround = this.actualAltitude < nearestAirport.getElevation() + 200;
+                this.onGround = this.actualAltitude < nearestAirport.getElevation() + 100;
             } else {
                 this.actualAltitude = ActualAltitude.get(reportPilotPosition.getAltitude(), correctedQnh).getActualAltitude();
                 this.actualFL = ActualAltitude.formatAltitude(this.actualAltitude, AltimeterMode.STD);
